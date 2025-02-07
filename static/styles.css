@@ -1,0 +1,99 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Form Container */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Heading */
+h1, h2 {
+    text-align: center;
+}
+
+/* Input Field */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+}
+
+/* Magnifying Glass Effect */
+input[type="text"]:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/512px-Magnifying_glass_icon.svg.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: right 10px center;
+}
+
+/* Submit Button */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.1);
+}
+
+/* Funny Animation on Submit */
+@keyframes bounceAway {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(-10px); }
+    40% { transform: translateY(10px); }
+    60% { transform: translateY(-10px); }
+    80% { transform: translateY(10px); }
+    100% { transform: translateX(100vw) rotate(360deg); opacity: 0; }
+}
+
+.submitted {
+    animation: bounceAway 1s forwards;
+}
+
+/* Mood Result Styling */
+h2 {
+    margin-top: 20px;
+    background: #e3f2fd;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Hide the form after animation */
+.hidden {
+    display: none;
+}

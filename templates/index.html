@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MindQuest - Mood Check</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"></link>
+  </head>
+  <body>
+    <h1>How are you feeling today?</h1>
+    <form method="POST">
+      <input
+        type="text"
+        name="mood_text"
+        placeholder="Type your mood..."
+        required
+      />
+      <button type="submit">Analyze Mood</button>
+    </form>
+    {% if mood_result %}
+    <h2>Your Mood: {{ mood_result }}</h2>
+    {% endif %}
+  </body>
+</html>
