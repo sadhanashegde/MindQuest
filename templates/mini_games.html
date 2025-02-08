@@ -1,24 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>MindQuest - Mini Games</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='mini-games.css') }}"
-    />
-  </head>
-  <body>
-    <h1>🎮 Mini Games</h1>
-    <p>Play fun games to relax and improve focus.</p>
-
-    <div class="game-links">
-      <a href="{{ url_for('mini_games.brick_breaker') }}" class="game-card">
-        <span>Brick Breaker 🧱</span>
-      </a>
-
-      <a href="{{ url_for('mini_games.snake_game') }}" class="game-card">
-        <span>Snake Game 🐍</span>
-      </a>
-    </div>
-  </body>
-</html>
+   <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Mini-Games</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                text-align: center;
+                padding: 50px;
+                background-color: #f0f8ff;
+            }
+            a {
+                display: block;
+                margin: 10px auto;
+                padding: 10px 15px;
+                text-decoration: none;
+                color: white;
+                background: #00796b;
+                width: 200px;
+                text-align: center;
+                border-radius: 8px;
+            }
+            a:hover {
+                background: #00594a;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Choose a Mini-Game</h1>
+        <a href="/brick-breaker" target="_blank">Brick Breaker</a>
+        <a href="/cross-road" target="_blank">Cross Road</a>
+        <a href="/flappy-cube" target="_blank">Flappy Cube</a>
+        <a href="/snake-game" target="_blank">Snake Game</a>
+    </body>
+    </html>
