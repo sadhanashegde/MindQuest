@@ -1,4 +1,5 @@
-﻿// Initialize scene, camera, and renderer
+
+// Initialize scene, camera, and renderer
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(
   window.innerWidth / -100,

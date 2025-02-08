@@ -1,16 +1,20 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify
+from flask_login import login_required, current_user
 
-journal_bp = Blueprint("journal_bp", __name__, url_prefix="/journaling")
+def create_journaling_blueprint():
+    journal_bp = Blueprint('journal', __name__)
 
-# Temporary storage for journal entries
-journal_entries = []
+    @journal_bp.route('/')
+    @login_required
+    def journal_home():
+        return render_template('journal/index.html')
 
-@journal_bp.route("/", methods=["GET", "POST"])
-def journal():
-    if request.method == "POST":
-        entry = request.form.get("entry")  # Get the journal text
-        if entry:
-            journal_entries.append(entry)  # Store the entry
-        return redirect(url_for("journal_bp.journal"))  # Reload page after saving
+    @journal_bp.route('/new', methods=['GET', 'POST'])
+    @login_required
+    def new_entry():
+        if request.method == 'POST':
+            # Add journal entry logic here
+            return jsonify({'status': 'success'})
+        return render_template('journal/new_entry.html')
 
-    return render_template("journal.html", entries=journal_entries)
+    return journal_bp

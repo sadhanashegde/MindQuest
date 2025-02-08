@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MindQuest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">MindQuest</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            {% if session.user %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="login-section">
+        <h1>Login to MindQuest</h1>
+        <p>Access personalized wellness experiences</p>
+        
+        <form action="{{ url_for('login') }}" method="POST" class="login-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Login page loaded");
+        });
+    </script>
+</body>
+</html>
