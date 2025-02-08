@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, render_template_string
+﻿from flask import Flask, request, render_template_string
 from textblob import TextBlob
 import json
 from collections import deque
@@ -6,7 +6,10 @@ import statistics
 
 app = Flask(__name__)
 
+# Store affirmations and mood data
 affirmations = []
+
+# Moving average window size for mood prediction
 MOOD_WINDOW_SIZE = 5
 mood_history = deque(maxlen=MOOD_WINDOW_SIZE)
 
@@ -55,9 +58,6 @@ HTML_TEMPLATE = """
         <p>Polarity Score: {{ polarity }}</p>
         <p>You earned {{ points }} self-care points!</p>
         <p><strong>Suggestions:</strong> {{ suggestions }}</p>
-        {% if activity_link %}
-        <p><a href="{{ activity_link }}">Click here for your recommended activity.</a></p>
-        {% endif %}
         {% if stress_prediction %}
         <p><strong>Prediction:</strong> {{ stress_prediction }}</p>
         {% endif %}
@@ -81,18 +81,7 @@ HTML_TEMPLATE = """
 </html>
 """
 
-# Analyze mood with more specific categorization
-def analyze_mood(text):
-    text = text.lower()
-    if "lonely" in text or "loneliness" in text:
-        return "lonely", "/journaling", "How about expressing your feelings in a journal?"
-    elif "stress" in text or "stressed" in text:
-        return "stressed", "/mini-games", "Try some fun mini-games to relax."
-    elif "anxiety" in text or "anxious" in text:
-        return "anxious", "/breathing", "Take a 5-minute breathing exercise to calm down."
-    else:
-        return "negative", "/mini-games", "Try some fun mini-games as a general pick-me-up."
-
+# Route to handle emotion analysis
 @app.route("/", methods=["GET", "POST"])
 def analyze_text_emotion():
     result = None
@@ -100,7 +89,6 @@ def analyze_text_emotion():
     polarity = 0
     points = 0
     suggestions = None
-    activity_link = None
     background_color = "#f0f0f0"  # Default background color for neutral
     stress_prediction = None
 
@@ -120,10 +108,10 @@ def analyze_text_emotion():
                 suggestions = "Keep up the positivity! How about a creative journaling challenge?"
                 background_color = "#ccffcc"  # Light green for positivity
             elif polarity < 0:
-                mood_result, activity_link, suggestions = analyze_mood(user_text)
-                result = f"Negative Emotion ({mood_result.capitalize()}) 😢"
+                result = "Negative Emotion 😢"
                 emotion_class = "negative"
                 points = 5
+                suggestions = "It's okay to feel this way. Try a 5-minute breathing exercise."
                 background_color = "#ffcccc"  # Light red for negativity
             else:
                 result = "Neutral Emotion 😐"
@@ -148,27 +136,16 @@ def analyze_text_emotion():
         HTML_TEMPLATE, result=result, polarity=polarity,
         emotion_class=emotion_class, points=points, suggestions=suggestions,
         affirmations=affirmations, background_color=background_color,
-        stress_prediction=stress_prediction, activity_link=activity_link
+        stress_prediction=stress_prediction
     )
 
+# Route to handle affirmations
 @app.route("/affirmations", methods=["POST"])
 def handle_affirmations():
     affirmation = request.form.get("affirmation")
     if affirmation:
         affirmations.append(affirmation)
     return analyze_text_emotion()
-
-@app.route("/journaling")
-def journaling():
-    return "<h1>Welcome to the Journaling Page</h1>"
-
-@app.route("/mini-games")
-def mini_games():
-    return "<h1>Welcome to the Mini-Games Page</h1>"
-
-@app.route("/breathing")
-def breathing():
-    return "<h1>Welcome to the Breathing Exercises Page</h1>"
 
 # Save mood data to a JSON file
 def save_mood_data(text, polarity):
@@ -179,3 +156,4 @@ def save_mood_data(text, polarity):
 
 if __name__ == "__main__":
     app.run(debug=True)
+   
