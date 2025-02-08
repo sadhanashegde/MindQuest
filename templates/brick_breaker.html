@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MindQuest - Mini Games - Bricky Breaker</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='brick_breaker.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Bricky Breaker</h1>
+    <p>Play fun games to relax and improve focus.</p>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <button id="startGame">Start Game</button>
+    <button id="resetGame">Reset</button>
+
+    <script src="{{ url_for('static', filename='scripts/brick_breaker.js') }}"></script>
+  </body>
+</html>

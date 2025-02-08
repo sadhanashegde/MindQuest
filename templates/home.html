@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindQuest - Your Mental Wellness Journey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">MindQuest</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+
+            {% if 'user' in session %}
+                <a href="{{ url_for('home') }}">Dashboard</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="hero-section">
+        <h1>Welcome to MindQuest</h1>
+        <p>Embark on a journey to emotional well-being through interactive experiences</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>AI-Powered Companion</h3>
+                <p>Your personal guide through emotional wellness, offering support and encouragement</p>
+            </div>
+            <div class="feature-card">
+                <h3>Interactive Challenges</h3>
+                <p>Engage in personalized mini-games and activities designed for stress relief</p>
+            </div>
+            <div class="feature-card">
+                <h3>Mood Tracking</h3>
+                <p>Track and analyze your emotional journey with advanced sentiment analysis</p>
+            </div>
+            <div class="feature-card">
+                <h3>Community Support</h3>
+                <p>Connect with others and participate in collaborative wellness quests</p>
+            </div>
+        </div>
+        <section class="games-section">
+            <h2>We Offer Games to relax Your Mind</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <h3>Brick Breaker</h3>
+                    <p>Smash bricks using a paddle and ball! A fun and engaging way to boost focus and coordination.</p>
+                    <button onclick="location.href='{{ url_for('brick_breaker') }}'" class="play-btn">Play Now</button>
+                </div>
+                
+                <div class="game-card">
+                    <h3>Cross Road</h3>
+                    <p>Relaxation exercises and cognitive techniques to manage anxiety.</p>
+                    <button onclick="location.href='{{ url_for('cross_road') }}'" class="play-btn">Play Now</button>
+                </div>
+                <div class="game-card">
+                    <h3>Flappy Cube</h3>
+                    <p>Interactive stress-busting activities to calm your mind.</p>
+                    <button onclick="location.href='{{ url_for('flappy_cube') }}'" class="play-btn">Play Now</button>
+                <div class="game-card">
+                    <h3>Snake game</h3>
+                    <p>Fun, short challenges to boost mood and mental clarity.</p>
+                    <button onclick="location.href='{{ url_for('snake_game') }}'" class="play-btn">Play Now</button>
+
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
