@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatroom</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #000; /* Black 3D background */
+      color: #fff;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    }
+    #rooms, #chat {
+      display: none;
+    }
+    #rooms {
+      display: block;
+    }
+    .room {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .room:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+    #messages {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .message {
+      margin: 10px 0;
+      display: flex;
+    }
+    .message.sent {
+      justify-content: flex-end;
+    }
+    .message.received {
+      justify-content: flex-start;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    .sent .bubble {
+      background: rgba(0, 150, 0, 0.7);
+    }
+    .received .bubble {
+      background: rgba(0, 0, 150, 0.7);
+    }
+    form {
+      display: flex;
+      margin-top: 10px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+    button {
+      margin-left: 10px;
+      padding: 10px;
+      background: rgba(0, 150, 0, 0.7);
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: rgba(0, 150, 0, 1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="rooms">
+      <h1>Select a Room</h1>
+      <div class="room" id="lonely">Lonely Room</div>
+      <div class="room" id="stress">Stress Room</div>
+      <div class="room" id="anxiety">Anxiety Room</div>
+    </div>
+
+    <div id="chat">
+      <h2 id="room-title"></h2>
+      <div id="messages"></div>
+      <form id="message-form">
+        <input id="message-input" type="text" placeholder="Type a message">
+        <button type="submit">Send</button>
+      </form>
+      <button id="leave">Leave Room</button>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    const roomsDiv = document.getElementById('rooms');
+    const chatDiv = document.getElementById('chat');
+    const messagesDiv = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+    const leaveButton = document.getElementById('leave');
+    const roomTitle = document.getElementById('room-title');
+    let username = prompt("Enter your username");
+    let currentRoom = '';
+
+    document.querySelectorAll('.room').forEach(room => {
+      room.addEventListener('click', () => {
+        const roomId = room.id;
+
+        if (currentRoom) {
+          socket.emit('leave_room', { username, room: currentRoom });
+        }
+
+        currentRoom = roomId;
+        roomTitle.textContent = `${roomId.charAt(0).toUpperCase() + roomId.slice(1)} Room`;
+        roomsDiv.style.display = 'none';
+        chatDiv.style.display = 'block';
+        messagesDiv.innerHTML = ''; // Clear previous messages
+
+        socket.emit('join_room', { username, room: currentRoom });
+      });
+    });
+
+    leaveButton.addEventListener('click', () => {
+      if (currentRoom) {
+        socket.emit('leave_room', { username, room: currentRoom });
+        currentRoom = '';
+        chatDiv.style.display = 'none';
+        roomsDiv.style.display = 'block';
+        messagesDiv.innerHTML = ''; // Clear chat
+      }
+    });
+
+    messageForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = messageInput.value.trim();
+
+      if (message && currentRoom) {
+        socket.emit('send_message', { username, room: currentRoom, message });
+        messageInput.value = ''; // Clear input field
+      }
+    });
+
+    socket.on('message', (data) => {
+      const { username: sender, message } = data;
+
+      if (!sender || !message) return; // Ignore invalid data
+
+      const type = sender === username ? 'sent' : 'received';
+      addMessage(type, `${sender}: ${message}`);
+    });
+
+    function addMessage(type, content) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', type);
+      const bubbleElement = document.createElement('div');
+      bubbleElement.classList.add('bubble');
+      bubbleElement.textContent = content;
+      messageElement.appendChild(bubbleElement);
+      messagesDiv.appendChild(messageElement);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll
+    }
+  </script>
+</body>
+</html>
