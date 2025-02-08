@@ -2,9 +2,23 @@
 <html lang="en">
   <head>
     <title>MindQuest - Mini Games</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='mini-games.css') }}"
+    />
   </head>
   <body>
-    <h1>Play Mini-Games</h1>
-    <p>Mini-games for stress relief coming soon!</p>
+    <h1>🎮 Mini Games</h1>
+    <p>Play fun games to relax and improve focus.</p>
+
+    <div class="game-links">
+      <a href="{{ url_for('mini_games.brick_breaker') }}" class="game-card">
+        <span>Brick Breaker 🧱</span>
+      </a>
+
+      <a href="{{ url_for('mini_games.snake_game') }}" class="game-card">
+        <span>Snake Game 🐍</span>
+      </a>
+    </div>
   </body>
 </html>

@@ -1,8 +1,8 @@
 const canvas = document.getElementById("journalCanvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 600;
-canvas.height = 400;
+canvas.width = 900;
+canvas.height = 700;
 canvas.style.border = "2px solid black";
 canvas.style.background = "white";
 
