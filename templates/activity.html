@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MindQuest - Choose Activity</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Your Mood: {{ mood_result }}</h1>
+    <p>Based on your mood, try one of these activities:</p>
+
+    <ul>
+      <li><a href="/breathing">🌬️ Breathing Exercises</a></li>
+      <li><a href="/mini-games">🎮 Mini Games</a></li>
+      <li><a href="/journal">📖 Journaling</a></li>
+    </ul>
+
+    <a href="/">🔙 Back to Home</a>
+  </body>
+</html>

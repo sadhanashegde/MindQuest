@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MindQuest - Journaling</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='journal.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Journaling</h1>
+    <p>Write your thoughts and express yourself.</p>
+
+    <form method="POST" action="/journaling">
+      <textarea
+        name="entry"
+        rows="5"
+        placeholder="Write your thoughts here..."
+        required
+      ></textarea>
+      <br />
+      <button type="submit">Save Entry</button>
+    </form>
+
+    <h2>Your Previous Entries:</h2>
+    <ul>
+      {% for entry in entries %}
+      <li>{{ entry }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Express Yourself with Digital Drawing:</h2>
+    <canvas
+      id="journalCanvas"
+      width="600"
+      height="400"
+      style="border: 1px solid black"
+    ></canvas>
+
+    <a href="/">Back to Home</a>
+
+    <!-- Embed the JavaScript file -->
+    <script src="{{ url_for('static', filename='scripts/journaling.js') }}"></script>
+  </body>
+</html>
