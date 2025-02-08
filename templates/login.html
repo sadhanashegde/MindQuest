@@ -21,19 +21,27 @@
         </div>
     </nav>
 
-    <main class="login-section">
-        <h1>Login to MindQuest</h1>
+    <main class="auth-container">
+        <h2>Login to MindQuest</h2>
         <p>Access personalized wellness experiences</p>
         
-        <form action="{{ url_for('login') }}" method="POST" class="login-form">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required>
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+            </div>
 
             <button type="submit" class="login-btn">Login</button>
         </form>
+
+        <div class="form-container">
+            <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a></p>
+        </div>
     </main>
 
     <script>

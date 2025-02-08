@@ -1,15 +1,17 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash  # Import for password hashing
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Required for session handling
 
 # Connect to MySQL
 db = mysql.connector.connect(
-    host="localhost",
+    host="localhost",  
     user="root",
-    password="sm123",
-    database="mindquest_db"
+    password="Sadhana@04",
+    database="mindquest_db",
+    port="3307"
 )
 cursor = db.cursor()
 
@@ -19,27 +21,63 @@ cursor = db.cursor()
 def home():
     return render_template('home.html')
 
+# Login Route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
-        cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (email, password))
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
         user = cursor.fetchone()
 
-        if user:
+        if user and check_password_hash(user[2], password):  # Assuming password is stored in the 3rd column
             session['user'] = email  # Store user session
             return redirect(url_for('home'))
         else:
-            return "Invalid credentials. Try again."
+            flash("Invalid credentials. Try again.", 'error')  # Flash message on failed login
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
+# Signup Route
+# Signup Route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html')  # Make sure 'signup.html' exists in templates/
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
 
+        # Check if passwords match
+        if password != confirm_password:
+            flash("Passwords do not match.", 'error')
+            return redirect(url_for('signup'))
+
+        # Check if email already exists
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash("Email already registered.", 'error')
+            return redirect(url_for('signup'))
+
+        # Hash the password before saving it
+        hashed_password = generate_password_hash(password)
+
+        # Insert the new user into the database with the username
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", 
+                       (username, email, hashed_password))
+        db.commit()
+
+        flash("Registration successful! Please log in.", 'success')
+        return redirect(url_for('login'))
+
+    return render_template('signup.html')
+
+
+# Logout Route
 @app.route('/logout')
 def logout():
     session.pop('user', None)  # Remove user session
@@ -68,7 +106,6 @@ def flappy_cube():
 @app.route('/snake_game')  
 def snake_game():
     return render_template('snake_game.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
