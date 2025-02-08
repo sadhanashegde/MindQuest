@@ -13,3 +13,13 @@ def brick_breaker():
 @games_bp.route("/snake-game")
 def snake_game():
     return render_template("snake_game.html")
+
+
+@games_bp.route("/cross-road")
+def snake_game():
+    return render_template("cross_road.html")
+
+
+@games_bp.route("/flappy-cube")
+def snake_game():
+    return render_template("flappy_cube.html")
