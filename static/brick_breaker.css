@@ -1,17 +1,29 @@
-/* Center everything */
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --background-color: #1e293b;
+    --text-color: #e2e8f0;
+    --button-primary: #4CAF50;
+    --button-secondary: #FF5733;
+    --button-hover-primary: #45a049;
+    --button-hover-secondary: #e04e2f;
+    --canvas-border: #334155;
+}
+
 body {
-    text-align: center;
     font-family: "Arial", sans-serif;
-    background: linear-gradient(135deg, #87CEEB, #FFB6C1);
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
     padding: 20px;
+    text-align: center;
 }
 
 /* Title styling */
 h1 {
     font-size: 32px;
     font-weight: bold;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
@@ -25,8 +37,8 @@ p {
 canvas {
     display: block;
     margin: 20px auto;
-    border: 3px solid #333;
-    background-color: #fff;
+    border: 3px solid var(--canvas-border);
+    background-color: #2d3748;
 }
 
 /* Buttons styling */
@@ -39,24 +51,19 @@ button {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-}
-
-/* Start button */
-#startGame {
-    background-color: #4CAF50;
+    background-color: var(--button-primary);
     color: white;
 }
 
-#startGame:hover {
-    background-color: #45a049;
+button:hover {
+    background-color: var(--button-hover-primary);
 }
 
 /* Reset button */
 #resetGame {
-    background-color: #FF5733;
-    color: white;
+    background-color: var(--button-secondary);
 }
 
 #resetGame:hover {
-    background-color: #e04e2f;
+    background-color: var(--button-hover-secondary);
 }

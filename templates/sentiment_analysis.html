@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentiment Analysis</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="sentiment-container">
+      <h1>Sentiment Analysis</h1>
+
+      <!-- Input Form -->
+      <form method="POST" action="{{ url_for('sentiment_analysis') }}">
+        <textarea
+          name="text_input"
+          placeholder="Enter your thoughts here..."
+          required
+        >
+{{ user_text }}</textarea
+        >
+        <button type="submit">Analyze Mood</button>
+      </form>
+
+      <!-- Display Results -->
+      {% if mood_result %}
+      <div class="result-box">
+        <h2>
+          Your Mood: <span class="{{ emotion_class }}">{{ mood_result }}</span>
+        </h2>
+        <p><strong>Polarity:</strong> {{ polarity }}</p>
+        <p><strong>Points Earned:</strong> {{ points }}</p>
+        <p><strong>Suggestions:</strong> {{ suggestions }}</p>
+
+        <h3>Recommended Songs 🎵</h3>
+        <ul>
+          {% for song in song_list %}
+          <li>{{ song }}</li>
+          {% endfor %}
+        </ul>
+
+        <h3>Stress Level: {{ stress_prediction }}</h3>
+      </div>
+      {% endif %}
+
+      <!-- Activity Links -->
+      <div class="activity-links">
+        <h2>Activities for You:</h2>
+        <ul>
+          <li><a href="{{ url_for('mini_games') }}">🎮 Play Mini-Games</a></li>
+          <li>
+            <a href="{{ url_for('journaling') }}">📖 Write in Your Journal</a>
+          </li>
+          <li>
+            <a href="{{ url_for('breathing') }}">🧘 Try a Breathing Exercise</a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="back-home" href="{{ url_for('home') }}">⬅ Back to Home</a>
+    </div>
+  </body>
+</html>
